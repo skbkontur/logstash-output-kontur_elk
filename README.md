@@ -29,8 +29,14 @@ output {
 - Logstash version 1.5.x
 - Work on jruby only
 
-## Instalation
+## Installation
 ```
-git clone 
-bin/plugin install logstash-output-kontur_elk-0.1.0.gem
+wget https://github.com/skbkontur/logstash-output-kontur_elk/raw/master/logstash-output-kontur_elk-0.0.9.gem
+bin/plugin install logstash-output-kontur_elk-0.0.9.gem
+```
+or
+```
+git clone https://github.com/skbkontur/logstash-output-kontur_elk.git
+gem build logstash-output-kontur_elk.gemspec
+bin/plugin install logstash-output-kontur_elk-0.0.9.gem
 ```
