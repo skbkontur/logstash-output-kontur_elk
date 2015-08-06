@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'logstash-output-kontur_elk'
-  s.version         = "0.0.9"
+  s.version         = "0.0.10"
   s.licenses = ["Apache License (2.0)"]
   s.summary = "SKB Kontur custom RabbitMQ output plugin"
   s.description = "This gem is a logstash plugin required to be installed on top of the Logstash core pipeline using $LS_HOME/bin/plugin install gemname. This gem is not a stand-alone program"
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # Files
-  s.files = `git ls-files`.split($\)
+  s.files = ["Gemfile", "LICENSE", "README.md", "Rakefile", "lib/logstash/outputs/kontur_elk.rb", "logstash-output-kontur_elk.gemspec"]
    # Tests
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
 
