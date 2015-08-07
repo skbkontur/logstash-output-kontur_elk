@@ -47,10 +47,23 @@ class LogStash::Outputs::KonturElk < LogStash::Outputs::Base
   public
   def receive(event)
     return unless output?(event)
+    max_field_size = 10922
     begin
       if connect
+        new_event = Hash.new
+        event.to_hash.each do | key, value |
+          if value.class == String 
+            if value.length > max_field_size
+               truncated = value.length - max_field_size
+               truncated_label = "truncated #{truncated}"
+               value = value[0, max_field_size - truncated_label.length - 3] + "[#{truncated_label}]"
+               new_event["@truncated"] = truncated_label
+            end
+          end
+          new_event[key] = value
+        end
         header = { "index" => { "_index" => event.sprintf(@index), "_type" => event.sprintf(@index_type) } }
-        @exchange.publish(header.to_json + "\n" + event.to_json + "\n", :routing_key => @queue, :properties => { :persistent => false })
+        @exchange.publish(header.to_json + "\n" + new_event.to_json + "\n", :routing_key => @queue, :properties => { :persistent => false })
       end
     rescue MarchHare::Exception, IOError, com.rabbitmq.client.AlreadyClosedException => e
       @logger.error("RabbitMQ connection error: #{e.message}. Will attempt to reconnect in 10 seconds...", :exception => e, :backtrace => e.backtrace)
